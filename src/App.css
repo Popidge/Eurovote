@@ -133,6 +133,60 @@ h2 {
   font-size: 14px;
 }
 
+.article-view {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-h);
+  display: grid;
+  gap: 18px;
+  line-height: 1.68;
+  margin-inline: auto;
+  max-width: 860px;
+  padding: 42px;
+  width: 100%;
+}
+
+.article-view h2 {
+  display: block;
+  font-size: 25px;
+  line-height: 1.18;
+  margin: 18px 0 0;
+}
+
+.article-view p {
+  color: var(--text-h);
+  font-size: 17px;
+}
+
+.article-view em {
+  color: inherit;
+}
+
+.article-view a {
+  color: #c61f57;
+  overflow-wrap: anywhere;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.article-view blockquote {
+  border-left: 4px solid #12a7a8;
+  color: var(--text-h);
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.45;
+  margin: 4px 0;
+  padding: 12px 0 12px 18px;
+}
+
+.article-view hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 8px 0;
+  width: 100%;
+}
+
 .two-column {
   display: grid;
   gap: 20px;
@@ -974,7 +1028,8 @@ h2 {
 
 @media (prefers-color-scheme: dark) {
   .stat-grid article,
-  .panel {
+  .panel,
+  .article-view {
     background: #1f2028;
   }
 
@@ -1088,6 +1143,18 @@ h2 {
 
   h1 {
     font-size: 34px;
+  }
+
+  .article-view {
+    padding: 24px;
+  }
+
+  .article-view h2 {
+    font-size: 22px;
+  }
+
+  .article-view p {
+    font-size: 16px;
   }
 }
 

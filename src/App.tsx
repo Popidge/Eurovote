@@ -1,12 +1,13 @@
-import { useMemo, useState } from 'react';
+import { Fragment, type ReactNode, useMemo, useState } from 'react';
 import { Crown, ExternalLink, Search } from 'lucide-react';
 import data from './data/vienna-2026-grand-final.json';
+import articleMarkdown from '../article.md?raw';
 import './App.css';
 
 type Entry = (typeof data.scoreboard)[number];
 type AudienceRank = (typeof data.audienceRankings)[number];
 type ScoreboardMode = 'official' | 'jury' | 'audience' | 'averageRank';
-type AppView = 'scoreboard' | 'counterfactuals' | 'public' | 'networks' | 'voters' | 'definitions';
+type AppView = 'article' | 'scoreboard' | 'counterfactuals' | 'public' | 'networks' | 'voters' | 'definitions';
 type SortKey =
   | 'rank'
   | 'country'
@@ -361,12 +362,105 @@ const buildAnalysis = (enriched: ReturnType<typeof buildEnrichedEntries>) => {
 const enriched = buildEnrichedEntries();
 const analysis = buildAnalysis(enriched);
 
+const inlineMarkdown = (text: string): ReactNode[] => {
+  const nodes: ReactNode[] = [];
+  const tokenPattern = /(\*\*[^*]+\*\*|\*[^*]+\*|https?:\/\/\S+)/g;
+  let cursor = 0;
+
+  for (const match of text.matchAll(tokenPattern)) {
+    const token = match[0];
+    const index = match.index ?? 0;
+    if (index > cursor) nodes.push(text.slice(cursor, index));
+
+    if (token.startsWith('**')) {
+      nodes.push(<strong key={`${index}-strong`}>{token.slice(2, -2)}</strong>);
+    } else if (token.startsWith('*')) {
+      nodes.push(<em key={`${index}-em`}>{token.slice(1, -1)}</em>);
+    } else {
+      const href = token.replace(/[.)]+$/, '');
+      const suffix = token.slice(href.length);
+      nodes.push(
+        <Fragment key={`${index}-link`}>
+          <a href={href} target="_blank" rel="noreferrer">
+            {href}
+          </a>
+          {suffix}
+        </Fragment>,
+      );
+    }
+
+    cursor = index + token.length;
+  }
+
+  if (cursor < text.length) nodes.push(text.slice(cursor));
+  return nodes;
+};
+
+const parseArticleMarkdown = (markdown: string) => {
+  const blocks: Array<{ type: 'heading' | 'paragraph' | 'quote' | 'rule'; text?: string; level?: number }> = [];
+  const lines = markdown.trim().split(/\r?\n/);
+  let paragraph: string[] = [];
+
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+    blocks.push({ type: 'paragraph', text: paragraph.join(' ') });
+    paragraph = [];
+  };
+
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushParagraph();
+      return;
+    }
+
+    if (/^-{3,}$/.test(line)) {
+      flushParagraph();
+      blocks.push({ type: 'rule' });
+      return;
+    }
+
+    const heading = /^(#{2,3})\s*(.+)$/.exec(line);
+    if (heading) {
+      flushParagraph();
+      blocks.push({ type: 'heading', level: heading[1].length, text: heading[2] });
+      return;
+    }
+
+    if (line.startsWith('>')) {
+      flushParagraph();
+      blocks.push({ type: 'quote', text: line.replace(/^>\s?/, '') });
+      return;
+    }
+
+    paragraph.push(line);
+  });
+
+  flushParagraph();
+  return blocks;
+};
+
+const articleBlocks = parseArticleMarkdown(articleMarkdown);
+
+function ArticleView() {
+  return (
+    <article className="article-view">
+      {articleBlocks.map((block, index) => {
+        if (block.type === 'rule') return <hr key={index} />;
+        if (block.type === 'quote') return <blockquote key={index}>{inlineMarkdown(block.text ?? '')}</blockquote>;
+        if (block.type === 'heading') return <h2 key={index}>{inlineMarkdown(block.text ?? '')}</h2>;
+        return <p key={index}>{inlineMarkdown(block.text ?? '')}</p>;
+      })}
+    </article>
+  );
+}
+
 function App() {
   const [selectedCountry, setSelectedCountry] = useState('United Kingdom');
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortState>({ key: 'rank', direction: 'asc' });
   const [scoreboardMode, setScoreboardMode] = useState<ScoreboardMode>('official');
-  const [activeView, setActiveView] = useState<AppView>('scoreboard');
+  const [activeView, setActiveView] = useState<AppView>('article');
 
   const sortedEntries = useMemo(() => {
     const direction = sort.direction === 'asc' ? 1 : -1;
@@ -439,6 +533,7 @@ function App() {
 
       <nav className="analysis-nav" aria-label="Analysis views">
         {[
+          ['article', 'Article'],
           ['scoreboard', 'Scoreboard'],
           ['counterfactuals', 'Counterfactuals'],
           ['public', 'Public patterns'],
@@ -452,7 +547,9 @@ function App() {
         ))}
       </nav>
 
-      {activeView !== 'definitions' && (
+      {activeView === 'article' && <ArticleView />}
+
+      {activeView !== 'article' && activeView !== 'definitions' && (
         <section className="two-column">
           <div className={activeView === 'scoreboard' ? 'view-stack' : 'view-stack compact'}>
             {activeView === 'scoreboard' && (
