@@ -32,7 +32,7 @@ npm run fetch:data
 
 ## Deployment
 
-GitHub Pages is deployed by `.github/workflows/deploy-pages.yml` whenever `main` is pushed.
+GitHub Pages is deployed by `.github/workflows/deploy-pages.yml` whenever `master` or `main` is pushed.
 
 The Vite base path is configured for:
 
