@@ -5,7 +5,7 @@ const SOURCE_URL =
   'https://www.eurovision.com/eurovision-song-contest/vienna-2026/vienna-2026-grand-final/';
 const OUT_FILE = new URL('../src/data/vienna-2026-grand-final.json', import.meta.url);
 
-const pointSchedule = new Set([12, 10, 8, 7, 6, 5, 4, 3, 2, 1]);
+const pointForRank = (rank) => [12, 10, 8, 7, 6, 5, 4, 3, 2, 1][rank - 1] ?? 0;
 
 const clean = (value) => value.replace(/\s+/g, ' ').trim();
 const slug = (value) =>
@@ -56,11 +56,46 @@ const parseScoreboard = ($) =>
     .get()
     .filter((entry) => entry.country);
 
-const parseDetails = ($) => {
+const parseDetailedAudienceRankings = ($, finalists) =>
+  $('.voting-results-section.mt-4 .voting-details')
+    .map((_, panel) => {
+      const voter = clean($(panel).find('h3').first().clone().children().remove().end().text()).replace(
+        /\s+breakdown$/i,
+        '',
+      );
+      if (!voter) return [];
+
+      return $(panel)
+        .find('.detailed-voting-results-entry')
+        .map((__, entry) => {
+          const recipient = clean($(entry).find('[data-country-name]').first().text());
+          const audienceRankResult = $(entry)
+            .find('.data-row-entry-result-wrapper')
+            .filter((___, result) => clean($(result).find('.data-row-entry-result-label').first().text()) === 'Audience Rank')
+            .first();
+          const rank = numberFrom(audienceRankResult.text());
+
+          if (!recipient || !finalists.has(recipient) || !rank) return undefined;
+
+          const points = pointForRank(rank);
+          return {
+            voter,
+            recipient,
+            rank,
+            points,
+            inScoringTop10: points > 0,
+          };
+        })
+        .get()
+        .filter(Boolean);
+    })
+    .get()
+    .flat();
+
+const parseDetails = ($, audienceRankByPair) => {
   const finalists = new Set(parseScoreboard($).map((entry) => entry.country));
   const votesGiven = [];
   const votesReceived = [];
-  const audienceRankings = [];
 
   $('.country-details').each((_, panel) => {
     const country = clean($(panel).find('h2').first().text());
@@ -80,17 +115,8 @@ const parseDetails = ($) => {
               recipient: row.country,
               source,
               points: row.points,
-              rank: source === 'audience' ? index + 1 : undefined,
+              rank: source === 'audience' ? audienceRankByPair.get(`${country}->${row.country}`) : undefined,
             });
-            if (source === 'audience' && finalists.has(row.country)) {
-              audienceRankings.push({
-                voter: country,
-                recipient: row.country,
-                rank: index + 1,
-                points: row.points,
-                inScoringTop10: pointSchedule.has(row.points),
-              });
-            }
           });
         }
 
@@ -108,7 +134,7 @@ const parseDetails = ($) => {
       });
   });
 
-  return { votesGiven, votesReceived, audienceRankings };
+  return { votesGiven, votesReceived };
 };
 
 const response = await fetch(SOURCE_URL);
@@ -119,7 +145,10 @@ if (!response.ok) {
 const html = await response.text();
 const $ = cheerio.load(html);
 const scoreboard = parseScoreboard($);
-const { votesGiven, votesReceived, audienceRankings } = parseDetails($);
+const finalists = new Set(scoreboard.map((entry) => entry.country));
+const audienceRankings = parseDetailedAudienceRankings($, finalists);
+const audienceRankByPair = new Map(audienceRankings.map((row) => [`${row.voter}->${row.recipient}`, row.rank]));
+const { votesGiven, votesReceived } = parseDetails($, audienceRankByPair);
 
 const data = {
   sourceUrl: SOURCE_URL,

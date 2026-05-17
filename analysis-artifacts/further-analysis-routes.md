@@ -57,40 +57,40 @@ Top pairwise public-majority leaderboard:
 |---:|---|---:|---:|---:|---:|---:|
 | 1 | Bulgaria | 24-0-0 | 686 | 2.9 | 810 | 312 |
 | 2 | Romania | 23-1-0 | 560 | 4.7 | 747 | 232 |
-| 3 | Israel | 22-2-0 | 494 | 5.6 | 714 | 220 |
-| 4 | Moldova | 21-3-0 | 454 | 6.2 | 694 | 183 |
-| 5 | Ukraine | 20-4-0 | 324 | 8.0 | 629 | 167 |
-| 6 | Italy | 18-5-1 | 156 | 10.4 | 545 | 147 |
-| 7 | Greece | 17-6-1 | 230 | 9.4 | 582 | 147 |
-| 8 | Australia | 16-7-1 | 322 | 8.1 | 628 | 122 |
-| 9 | Finland | 16-7-1 | 296 | 8.4 | 615 | 138 |
-| 10 | Czechia | 14-10-0 | 134 | 10.7 | 534 | 9 |
+| 3 | Israel | 22-2-0 | 500 | 5.5 | 717 | 220 |
+| 4 | Moldova | 21-3-0 | 430 | 6.5 | 682 | 183 |
+| 5 | Ukraine | 19-4-1 | 390 | 7.1 | 662 | 167 |
+| 6 | Italy | 19-4-1 | 360 | 7.5 | 647 | 147 |
+| 7 | Greece | 18-6-0 | 348 | 7.7 | 641 | 147 |
+| 8 | Finland | 16-7-1 | 364 | 7.5 | 649 | 138 |
+| 9 | Australia | 16-7-1 | 322 | 8.1 | 628 | 122 |
+| 10 | Albania | 15-9-0 | 162 | 10.3 | 548 | 85 |
 
 ### Story
 
-The public's broad preference order is not identical to the public points table. The winner is robust under every public method tested, but the middle of the ranking changes sharply.
+The public's broad preference order is not identical to the public points table. The winner is robust under every public method tested, and the corrected detailed-rank data shows a more modest middle-table reshuffle than the earlier bucket-derived data suggested.
 
-Czechia is the clearest example:
+France is the clearest low-score example:
 
-- Audience points rank: 20
-- Borda rank: 10
-- Pairwise rank: 10
-- Audience points: 9
+- Audience points rank: 18
+- Borda rank: 14
+- Pairwise rank: 14
+- Audience points: 14
 
-This reinforces the earlier "11th-place heartbreak" story: Czechia had broad mid-table public support but rarely crossed the top-10 points threshold.
+This reinforces the corrected near-miss story: France was not broadly loved enough to score heavily, but its full rankings were stronger than its 14 public points alone imply.
 
 ### Eurovision Points vs Borda Divergences
 
 | Country | Audience points rank | Borda rank | Difference |
 |---|---:|---:|---:|
-| Czechia | 20 | 10 | -10 |
-| Norway | 15 | 24 | +9 |
-| Cyprus | 14 | 23 | +9 |
-| United Kingdom | 25 | 16 | -9 |
-| Serbia | 13 | 21 | +8 |
-| Malta | 21 | 13 | -8 |
-| Sweden | 17 | 25 | +8 |
-| Lithuania | 19 | 11 | -8 |
+| France | 18 | 14 | -4 |
+| Malta | 21 | 18 | -3 |
+| Cyprus | 14 | 17 | +3 |
+| Austria | 22 | 25 | +3 |
+| Finland | 8 | 6 | -2 |
+| Lithuania | 19 | 21 | +2 |
+| Sweden | 17 | 19 | +2 |
+| Germany | 23 | 22 | -1 |
 
 Negative difference means the country was better in broad public ranking than in Eurovision points.
 
@@ -231,7 +231,7 @@ This pairs well with the consensus/polarisation view:
 - Broad high score: Bulgaria.
 - Concentrated low score: Malta, Sweden, Lithuania, Austria.
 - Concentrated medium score: Serbia, Cyprus.
-- Broad but unrewarded: Czechia and Lithuania in rank-based views.
+- Better in full rankings than points suggest: France and Malta.
 
 Suggested UI:
 

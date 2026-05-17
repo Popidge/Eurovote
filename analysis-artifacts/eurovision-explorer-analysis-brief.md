@@ -18,7 +18,7 @@ The highest-value additions for the explorer are:
 
 1. Jury/public split analysis.
 2. Public consensus versus polarisation.
-3. The "10-point cliff" / 11th-place heartbreak metric.
+3. The "10-point cliff" / 11th-place near-miss metric.
 4. Bloc or affinity lift with transparent caveats.
 5. Counterfactual scoreboards: actual, jury-only, audience-only, and average-audience-rank.
 6. Reciprocal voting network moments.
@@ -29,7 +29,7 @@ The most important single story is that Bulgaria is not only the points winner. 
 
 Use `scoreboard` for official headline totals and final ranks.
 
-Use `audienceRankings` for full public-rank analysis. These rows are richer than the public points alone because they preserve ranks outside the top 10.
+Use `audienceRankings` for full public-rank analysis. These rows are richer than the public points alone because they preserve ranks outside the top 10. They must be parsed from the detailed voting results panels, not inferred from the "No points" country bucket in the accordion summaries.
 
 Use `votesGiven` for jury points and audience points given by each voting country. For audience analysis, prefer `audienceRankings` when rank depth matters, and `votesGiven` when exact awarded points matter.
 
@@ -288,9 +288,9 @@ Average-public-rank top five:
 
 1. Bulgaria - 2.9
 2. Romania - 4.7
-3. Israel - 5.6
-4. Moldova - 6.2
-5. Ukraine - 8.0
+3. Israel - 5.5
+4. Moldova - 6.5
+5. Ukraine - 7.1
 
 Suggested explorer treatment:
 
@@ -301,31 +301,33 @@ Suggested explorer treatment:
   - Average public rank
 - Preserve official final rank in each row to show movement.
 
-### 4. The 10-Point Cliff: Czechia's 31 Elevenths
+### 4. The 10-Point Cliff: France's 7 Elevenths
 
-Czechia:
+France:
 
-- Audience points: 9
-- Audience points place: 20
-- Average public rank: 10.7
-- Average-public-rank place: 10
-- Audience 11th places: 31
+- Audience points: 14
+- Audience points place: 18
+- Average public rank: 12.5
+- Average-public-rank place: 14
+- Audience 11th places: 7
 
-This is the clearest structural scoring story in the dataset. Czechia was very often just outside the points. The public did not ignore it; the top-10 threshold did.
+The corrected detailed-rank data does not support the earlier Czechia headline. Czechia had 31 non-scoring public rankings, but none were exactly 11th. France is the strongest literal 11th-place near-miss case.
 
 Other near-miss cases:
 
 | Country | Audience 11ths | Audience points | Average public rank |
 |---|---:|---:|---:|
-| Czechia | 31 | 9 | 10.7 |
-| Lithuania | 4 | 12 | 11.7 |
-| Moldova | 1 | 183 | 6.2 |
+| France | 7 | 14 | 12.5 |
+| Croatia | 4 | 71 | 11.5 |
+| Albania | 3 | 85 | 10.3 |
+| Australia | 3 | 122 | 8.1 |
+| Italy | 3 | 147 | 7.5 |
 
 Suggested explorer treatment:
 
 - Add an "11th-place heartbreak" module.
 - For selected countries, show a rank histogram with rank 11 highlighted.
-- Add copy such as: "Ranked 11th by 31 public voters: almost liked everywhere, rarely rewarded."
+- Add copy such as: "France was ranked 11th by 7 public voters: repeatedly just outside the points."
 
 ### 5. Polarising Entries
 
@@ -333,14 +335,14 @@ Highest public-rank volatility:
 
 | Country | Rank SD | Average rank | Public first places | Non-scoring rankings |
 |---|---:|---:|---:|---:|
-| Serbia | 8.5 | 18.5 | 2 | 23 |
-| Italy | 8.0 | 10.4 | 2 | 12 |
-| Greece | 7.0 | 9.4 | 3 | 8 |
-| Cyprus | 6.6 | 19.9 | 1 | 29 |
-| Denmark | 6.4 | 13.2 | 1 | 21 |
-| Croatia | 6.4 | 13.3 | 1 | 19 |
-| Albania | 6.2 | 12.0 | 0 | 17 |
-| Ukraine | 5.9 | 8.0 | 3 | 7 |
+| Cyprus | 5.6 | 15.8 | 1 | 29 |
+| Croatia | 5.4 | 11.5 | 1 | 19 |
+| Albania | 5.1 | 10.3 | 0 | 17 |
+| Denmark | 5.0 | 11.0 | 1 | 21 |
+| Serbia | 4.8 | 12.1 | 2 | 23 |
+| Lithuania | 4.6 | 18.6 | 1 | 34 |
+| Ukraine | 4.4 | 7.1 | 3 | 7 |
+| Norway | 4.3 | 15.5 | 0 | 31 |
 
 Suggested explorer treatment:
 
@@ -360,22 +362,22 @@ Countries with audience <= 20:
 
 | Country | Audience points | Average public rank | Public top 10s |
 |---|---:|---:|---:|
-| France | 14 | 18.0 | 8 |
-| Poland | 17 | 15.6 | 6 |
-| Norway | 19 | 20.2 | 4 |
-| Czechia | 9 | 10.7 | 4 |
-| Malta | 8 | 12.8 | 3 |
-| Sweden | 16 | 22.2 | 3 |
-| Belgium | 0 | 19.8 | 0 |
-| Lithuania | 12 | 11.7 | 1 |
-| Germany | 0 | 16.0 | 0 |
-| Austria | 5 | 14.8 | 1 |
-| United Kingdom | 0 | 14.1 | 0 |
+| France | 14 | 12.5 | 8 |
+| Poland | 17 | 14.1 | 6 |
+| Norway | 19 | 15.5 | 4 |
+| Czechia | 9 | 17.1 | 4 |
+| Malta | 8 | 16.5 | 3 |
+| Sweden | 16 | 16.6 | 3 |
+| Lithuania | 12 | 18.6 | 1 |
+| Germany | 0 | 20.9 | 0 |
+| United Kingdom | 0 | 21.8 | 0 |
+| Belgium | 0 | 22.4 | 0 |
+| Austria | 5 | 22.5 | 1 |
 
 Suggested explorer treatment:
 
 - Add explanatory text or tooltip: "Zero public points does not necessarily mean every country ranked the entry last; it means no voting entity placed it inside its public top 10."
-- This is especially useful for Germany and the United Kingdom: both had zero audience points but average public ranks of 16.0 and 14.1 respectively.
+- This is especially useful for zero-point countries: Germany, the United Kingdom, and Belgium all had zero audience points, but their average public ranks were 20.9, 21.8, and 22.4 rather than universal last places.
 
 ### 7. Bloc / Affinity Lift Is Strong but Did Not Decide the Winner
 
@@ -474,7 +476,7 @@ Suggested explorer treatment:
 
 4. 11th-place heartbreak:
    - count rank 11s
-   - highlight Czechia
+   - highlight France
 
 ### Priority 2: Add After Core Metrics
 
@@ -499,7 +501,7 @@ Suggested explorer treatment:
 Use these as starting points, not final editorial text:
 
 - "Bulgaria did not just win the scoreboard. It was the public's broad-consensus winner, appearing in every public top 10."
-- "Czechia was the casualty of the top-10 threshold: 31 public voters ranked it 11th, just outside the points."
+- "France was the clearest 11th-place near-miss: 7 public voters ranked it just outside the points."
 - "Zero public points does not always mean universal rejection. It means no voting entity placed the entry in its public top 10."
 - "Modeled affinity voting created large local lifts, especially in the Hellenic, Nordic, Balkan, and Moldova/Romania pairs. In this simple no-redistribution model, it did not change the winner."
 - "The jury and public told different stories: France was a jury top-four entry but only 18th with the public; Romania was public runner-up but only 13th with juries."
@@ -535,4 +537,3 @@ Before shipping any integrated metric, verify:
 - Affinity labels are caveated as modeled groups.
 - No polished display text uses mojibake artist/song names until encoding is corrected.
 - Zero-points explanations distinguish "no top-10 placements" from "ranked last everywhere".
-
